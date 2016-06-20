@@ -32,17 +32,24 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     f = h5py.File(args.filename)
+    #Trigger PMT
     dset = f['c1'][:100000]
     histamp = find_amp(dset)
-#    dset2 = f['c2'][:100000]
- #   histamp2 = find_amp(dset2)
+    #Signal PMT
+    dset2 = f['c2'][:100000]
+    histamp2 = find_amp(dset2)
 
+    plt.figure(1)
     plt.hist(histamp, bins=range(min(histamp), max(histamp), 1))
-  #  plt.hist(histamp2, bins=range(min(histamp2), max(histamp2), 1))
-    plt.title("Histogram of Pulse Amplitude")
+    plt.title("Trigger Pulse Amplitude")
     plt.xlabel("Amplitude")
-
+    plt.figure(2)
+    plt.hist(histamp2, bins=range(min(histamp2), max(histamp2), 1))
+    plt.title("Signal Pulse Amplitude")
+    plt.xlabel("Amplitude")
+    
     plt.show()
+
 
 
 
