@@ -8,18 +8,10 @@ from scipy.optimize import fmin
 
 print "start program"
 
-def get_window(v):
-    ind = np.argmin(v[np.min(v,axis=1) < -10],axis=1)
-    med = np.median(ind)
-    # 20 ns window
-    return med - 20, med + 20
-
-
 #Finds the amplitude of each of the charge curves with barrier
 def find_amp(v):
 	amplitude = np.min(v,axis=1)
-	win = get_window(v)
-#	chargeamp = -adc_to_voltage(np.trapz(dset2[:,win[0]:win[1]]))*1e3/2/50.0
+	filteramp = amplitude[amplitude < -200]
 	return abs(amplitude)
 
 #Takes the input from the terminal and reads it
@@ -40,11 +32,11 @@ if __name__ == '__main__':
     histamp2 = find_amp(dset2)
 
     plt.figure(1)
-    plt.hist(histamp, bins=range(min(histamp), max(histamp), 1))
+    plt.hist(histamp, bins=range(min(histamp), max(histamp), 10))
     plt.title("Trigger Pulse Amplitude")
     plt.xlabel("Amplitude")
     plt.figure(2)
-    plt.hist(histamp2, bins=range(min(histamp2), max(histamp2), 1))
+    plt.hist(histamp2, bins=range(min(histamp2), max(histamp2), 10))
     plt.title("Signal Pulse Amplitude")
     plt.xlabel("Amplitude")
     
