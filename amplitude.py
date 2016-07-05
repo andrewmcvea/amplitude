@@ -12,7 +12,7 @@ print "start program"
 def find_amp(v):
 	amplitude = np.min(v,axis=1)
 	filteramp = amplitude[amplitude < -200]
-	return abs(amplitude)
+	return abs(filteramp)
 
 #Takes the input from the terminal and reads it
 if __name__ == '__main__':
@@ -32,11 +32,11 @@ if __name__ == '__main__':
     histamp2 = find_amp(dset2)
 
     plt.figure(1)
-    plt.hist(histamp, bins=range(min(histamp), max(histamp), 10))
+    plt.hist(histamp, bins=range(0, max(histamp), 10))
     plt.title("Trigger Pulse Amplitude")
     plt.xlabel("Amplitude")
     plt.figure(2)
-    plt.hist(histamp2, bins=range(min(histamp2), max(histamp2), 10))
+    plt.hist(histamp2, bins=range(0, max(histamp2), 10))
     plt.title("Signal Pulse Amplitude")
     plt.xlabel("Amplitude")
     
