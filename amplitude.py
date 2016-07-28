@@ -19,24 +19,30 @@ def find_amp(v):
 #Takes the input from the terminal and reads it
 if __name__ == '__main__':
     import argparse
+    import sys
     import matplotlib.pyplot as plt
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('filename', help="input filename")
+    parser.add_argument('filenames', nargs='+', help='input files')
     args = parser.parse_args()
 
-    f = h5py.File(args.filename)
-    #Trigger PMT
-    dset = f['c1'][:100000]
-    histamp = find_amp(dset)
-    #Signal PMT
-    dset2 = f['c2'][:100000]
-    histamp2 = find_amp(dset2)
-    
-    l1 = len(histamp)
-    l2 = len(histamp2)
+    amp = []
+    amp2 = []
+    for filename in args.filenames:
+        with h5py.File(filename) as f:
+            #Trigger PMT
+            dset = f['c1'][:100000]
+            histamp = find_amp(dset)
+            amp.extend(histamp)
+            #Signal PMT
+            dset2 = f['c2'][:100000]
+            histamp2 = find_amp(dset2)
+            amp2.extend(histamp2)
+
+    l1 = len(amp)
+    l2 = len(amp2)
     c_rate = l2/l1
-    print c_rate
+    print 'Coincidence Rate =', c_rate
 
     plt.figure(1)
     plt.hist(histamp, bins=range(0, max(histamp), 10))
